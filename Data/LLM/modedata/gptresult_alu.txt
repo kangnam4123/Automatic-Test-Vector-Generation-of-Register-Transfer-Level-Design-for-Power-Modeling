@@ -1,0 +1,18 @@
+| `alu_op_i` | Operation   |
+|------------|-------------|
+| 0000       | ALU_ADD     |
+| 0001       | ALU_SUB     |
+| 0010       | ALU_AND     |
+| 0011       | ALU_OR      |
+| 0100       | ALU_XOR     |
+| 0101       | ALU_SLT     |
+| 0110       | ALU_SLTU    |
+| 0111       | ALU_SLL     |
+| 1000       | ALU_SRL     |
+| 1001       | ALU_SRA     |
+| 1010       | ALU_MULL    |
+| 1011       | ALU_MULH    |
+| 1100       | ALU_DIV     |
+| 1101       | ALU_REM     |
+| 1110       | ALU_AUIPC   |
+| 1111       | ALU_IDLE    |

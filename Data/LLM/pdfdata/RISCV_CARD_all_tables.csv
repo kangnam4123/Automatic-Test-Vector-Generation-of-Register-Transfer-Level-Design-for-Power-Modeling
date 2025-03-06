@@ -1,0 +1,939 @@
+Table 1
+0,1,2
+"funct7
+rs2
+rs1
+funct3",rd,opcode
+"imm[11:0]
+rs1
+funct3",rd,opcode
+"imm[11:5]
+rs2
+rs1
+funct3",imm[4:0],opcode
+"imm[12|10:5]
+rs2
+rs1
+funct3",imm[4:1|11],opcode
+imm[31:12],rd,opcode
+imm[20|10:1|11|19:12],rd,opcode
+
+
+Table 2
+0,1,2,3,4,5,6,7
+Inst,Name,FMT,Opcode,funct3,funct7,Description (C),Note
+"add
+sub
+xor
+or
+and
+sll
+srl
+sra
+slt
+sltu","ADD
+SUB
+XOR
+OR
+AND
+Shift Left Logical
+Shift Right Logical
+Shift Right Arith*
+Set Less Than
+Set Less Than (U)","R
+R
+R
+R
+R
+R
+R
+R
+R
+R","0110011
+0110011
+0110011
+0110011
+0110011
+0110011
+0110011
+0110011
+0110011
+0110011","0x0
+0x0
+0x4
+0x6
+0x7
+0x1
+0x5
+0x5
+0x2
+0x3","0x00
+0x20
+0x00
+0x00
+0x00
+0x00
+0x00
+0x20
+0x00
+0x00","rd =
+rs1 +
+rs2
+rd =
+rs1 -
+rs2
+rd =
+rs1 ˆ
+rs2
+rd =
+rs1 |
+rs2
+rd =
+rs1 &
+rs2
+rd =
+rs1 <<
+rs2
+rd =
+rs1 >>
+rs2
+rd =
+rs1 >>
+rs2
+rd =
+(rs1
+<
+rs2)?1:0
+rd =
+(rs1
+<
+rs2)?1:0","msb-extends
+zero-extends"
+"addi
+xori
+ori
+andi
+slli
+srli
+srai
+slti
+sltiu","ADD Immediate
+XOR Immediate
+OR Immediate
+AND Immediate
+Shift Left Logical Imm
+Shift Right Logical Imm
+Shift Right Arith Imm
+Set Less Than Imm
+Set Less Than Imm (U)","I
+I
+I
+I
+I
+I
+I
+I
+I","0010011
+0010011
+0010011
+0010011
+0010011
+0010011
+0010011
+0010011
+0010011","0x0
+0x4
+0x6
+0x7
+0x1
+0x5
+0x5
+0x2
+0x3","imm[5:11]=0x00
+imm[5:11]=0x00
+imm[5:11]=0x20","rd =
+rs1 +
+imm
+rd =
+rs1 ˆ
+imm
+rd =
+rs1 |
+imm
+rd =
+rs1 &
+imm
+rd =
+rs1 <<
+imm[0:4]
+rd =
+rs1 >>
+imm[0:4]
+rd =
+rs1 >>
+imm[0:4]
+rd =
+(rs1
+<
+imm)?1:0
+rd =
+(rs1
+<
+imm)?1:0","msb-extends
+zero-extends"
+"lb
+lh
+lw
+lbu
+lhu","Load Byte
+Load Half
+Load Word
+Load Byte (U)
+Load Half (U)","I
+I
+I
+I
+I","0000011
+0000011
+0000011
+0000011
+0000011","0x0
+0x1
+0x2
+0x4
+0x5",,"rd =
+M[rs1+imm][0:7]
+rd =
+M[rs1+imm][0:15]
+rd =
+M[rs1+imm][0:31]
+rd =
+M[rs1+imm][0:7]
+rd =
+M[rs1+imm][0:15]","zero-extends
+zero-extends"
+"sb
+sh
+sw","Store Byte
+Store Half
+Store Word","S
+S
+S","0100011
+0100011
+0100011","0x0
+0x1
+0x2",,"M[rs1+imm][0:7] =
+rs2[0:7]
+M[rs1+imm][0:15] =
+rs2[0:15]
+M[rs1+imm][0:31] =
+rs2[0:31]",
+"beq
+bne
+blt
+bge
+bltu
+bgeu","Branch ==
+Branch !=
+Branch <
+Branch ≥
+Branch < (U)
+Branch ≥ (U)","B
+B
+B
+B
+B
+B","1100011
+1100011
+1100011
+1100011
+1100011
+1100011","0x0
+0x1
+0x4
+0x5
+0x6
+0x7",,"if(rs1
+==
+rs2) PC +=
+imm
+if(rs1
+!=
+rs2) PC +=
+imm
+if(rs1
+<
+rs2) PC +=
+imm
+if(rs1
+>=
+rs2) PC +=
+imm
+if(rs1
+<
+rs2) PC +=
+imm
+if(rs1
+>=
+rs2) PC +=
+imm","zero-extends
+zero-extends"
+"jal
+jalr","Jump And Link
+Jump And Link Reg","J
+I","1101111
+1100111",0x0,,"rd =
+PC+4;
+PC +=
+imm
+rd =
+PC+4;
+PC =
+rs1
++
+imm",
+"lui
+auipc","Load Upper Imm
+Add Upper Imm to PC","U
+U","0110111
+0010111",,,"rd =
+imm <<
+12
+rd =
+PC +
+(imm << 12)",
+ecall,Environment Call,I,1110011,0x0,imm=0x0,"Transfer control to
+OS",
+ebreak,Environment Break,I,1110011,0x0,imm=0x1,"Transfer control to
+debugger",
+
+
+Table 3
+0,1,2,3,4,5,6
+Inst,Name,FMT,Opcode,funct3,funct7,Description (C)
+"mul
+mulh
+mulsu
+mulu
+div
+divu
+rem
+remu","MUL
+MUL High
+MUL High (S) (U)
+MUL High (U)
+DIV
+DIV (U)
+Remainder
+Remainder (U)","R
+R
+R
+R
+R
+R
+R
+R","0110011
+0110011
+0110011
+0110011
+0110011
+0110011
+0110011
+0110011","0x0
+0x1
+0x2
+0x3
+0x4
+0x5
+0x6
+0x7","0x01
+0x01
+0x01
+0x01
+0x01
+0x01
+0x01
+0x01","rd =
+(rs1
+*
+rs2)[31:0]
+rd =
+(rs1
+*
+rs2)[63:32]
+rd =
+(rs1
+*
+rs2)[63:32]
+rd =
+(rs1
+*
+rs2)[63:32]
+rd =
+rs1 /
+rs2
+rd =
+rs1 /
+rs2
+rd =
+rs1 %
+rs2
+rd =
+rs1 %
+rs2"
+
+
+Table 4
+0,1,2,3,4,5,6
+Inst,Name,FMT,Opcode,funct3,funct5,Description (C)
+"lr.w
+sc.w
+amoswap.w
+amoadd.w
+amoand.w
+amoor.w
+amoxor.w
+amomax.w
+amomin.w","Load Reserved
+Store Conditional
+Atomic Swap
+Atomic ADD
+Atomic AND
+Atomic OR
+Atomix XOR
+Atomic MAX
+Atomic MIN","R
+R
+R
+R
+R
+R
+R
+R
+R","0101111
+0101111
+0101111
+0101111
+0101111
+0101111
+0101111
+0101111
+0101111","0x2
+0x2
+0x2
+0x2
+0x2
+0x2
+0x2
+0x2
+0x2","0x02
+0x03
+0x01
+0x00
+0x0C
+0x0A
+0x04
+0x14
+0x10","rd =
+M[rs1], reserve M[rs1]
+if (reserved)
+{
+M[rs1]
+=
+rs2; rd
+=
+0
+}
+else
+{
+rd =
+1
+}
+rd =
+M[rs1]; swap(rd, rs2);
+M[rs1]
+=
+rd
+rd =
+M[rs1]
++ rs2; M[rs1]
+= rd
+rd =
+M[rs1]
+& rs2; M[rs1]
+= rd
+rd =
+M[rs1]
+| rs2; M[rs1]
+= rd
+rd =
+M[rs1]
+ˆ rs2; M[rs1]
+= rd
+rd =
+max(M[rs1], rs2);
+M[rs1]
+=
+rd
+rd =
+min(M[rs1], rs2);
+M[rs1]
+=
+rd"
+
+
+Table 5
+0,1,2,3,4,5,6
+Inst,Name,FMT,Opcode,funct3,funct5,Description (C)
+"flw
+fsw
+fmadd.s
+fmsub.s
+fnmadd.s
+fnmsub.s
+fadd.s
+fsub.s
+fmul.s
+fdiv.s
+fsqrt.s
+fsgnj.s
+fsgnjn.s
+fsgnjx.s
+fmin.s
+fmax.s
+fcvt.s.w
+fcvt.s.wu
+fcvt.w.s
+fcvt.wu.s
+fmv.x.w
+fmv.w.x
+feq.s
+flt.s
+fle.s
+fclass.s","Flt Load Word
+Flt Store Word
+Flt Fused Mul-Add
+Flt Fused Mul-Sub
+Flt Neg Fused Mul-Add
+Flt Neg Fused Mul-Sub
+Flt Add
+Flt Sub
+Flt Mul
+Flt Div
+Flt Square Root
+Flt Sign Injection
+Flt Sign Neg Injection
+Flt Sign Xor Injection
+Flt Minimum
+Flt Maximum
+Flt Conv from Sign Int
+Flt Conv from Uns Int
+Flt Convert to Int
+Flt Convert to Int
+Move Float to Int
+Move Int to Float
+Float Equality
+Float Less Than
+Float Less / Equal
+Float Classify","*
+*
+*
+*
+*
+*
+*
+*
+*
+*
+*
+*
+*
+*
+*
+*
+*
+*
+*
+*
+*
+*
+*
+*
+*
+*",,,,"rd =
+M[rs1
++
+imm]
+M[rs1
++
+imm] =
+rs2
+rd =
+rs1 *
+rs2 +
+rs3
+rd =
+rs1 *
+rs2 -
+rs3
+rd =
+-rs1 *
+rs2
++
+rs3
+rd =
+-rs1 *
+rs2
+-
+rs3
+rd =
+rs1 +
+rs2
+rd =
+rs1 -
+rs2
+rd =
+rs1 *
+rs2
+rd =
+rs1 /
+rs2
+rd =
+sqrt(rs1)
+rd =
+abs(rs1)
+*
+sgn(rs2)
+rd =
+abs(rs1)
+*
+-sgn(rs2)
+rd =
+rs1 *
+sgn(rs2)
+rd =
+min(rs1,
+rs2)
+rd =
+max(rs1,
+rs2)
+rd =
+(float) rs1
+rd =
+(float) rs1
+rd =
+(int32_t)
+rs1
+rd =
+(uint32_t)
+rs1
+rd =
+*((int*)
+&rs1)
+rd =
+*((float*)
+&rs1)
+rd =
+(rs1 ==
+rs2)
+? 1 :
+0
+rd =
+(rs1 <
+rs2)
+? 1
+: 0
+rd =
+(rs1 <=
+rs2)
+? 1 :
+0
+rd =
+0..9"
+
+
+Table 6
+0,1,2
+"funct4
+rd/rs1
+rs2",,op
+funct3,"imm
+rd/rs1
+imm",op
+funct3,"imm
+rs2",op
+funct3,"imm
+rd’",op
+funct3,"imm
+rs1’
+imm
+rd’",op
+funct3,"imm
+rd’/rs1’
+imm
+rs2’",op
+funct3,"imm
+rs1’
+imm",op
+funct3,offset,op
+
+
+Table 7
+0,1,2,3,4,5
+Inst,Name,FMT,OP,Funct,Description
+"c.lwsp
+c.swsp
+c.lw
+c.sw
+c.j
+c.jal
+c.jr
+c.jalr
+c.beqz
+c.bnez
+c.li
+c.lui
+c.addi
+c.addi16sp
+c.addi4spn
+c.slli
+c.srli
+c.srai
+c.andi
+c.mv
+c.add
+c.and
+c.or
+c.xor
+c.sub
+c.nop
+c.ebreak","Load Word from SP
+Store Word to SP
+Load Word
+Store Word
+Jump
+Jump And Link
+Jump Reg
+Jump And Link Reg
+Branch == 0
+Branch != 0
+Load Immediate
+Load Upper Imm
+ADD Immediate
+ADD Imm * 16 to SP
+ADD Imm * 4 + SP
+Shift Left Logical Imm
+Shift Right Logical Imm
+Shift Right Arith Imm
+AND Imm
+MoVe
+ADD
+AND
+OR
+XOR
+SUB
+No OPeration
+Environment BREAK","CI
+CSS
+CL
+CS
+CJ
+CJ
+CR
+CR
+CB
+CB
+CI
+CI
+CI
+CI
+CIW
+CI
+CB
+CB
+CB
+CR
+CR
+CS
+CS
+CS
+CS
+CI
+CR","10
+10
+00
+00
+01
+01
+10
+10
+01
+01
+01
+01
+01
+01
+00
+10
+01
+01
+01
+10
+10
+01
+01
+01
+01
+01
+10","010
+110
+010
+110
+101
+001
+1000
+1001
+110
+111
+010
+011
+000
+011
+000
+000
+100x00
+100x01
+100x10
+1000
+1001
+10001111
+10001110
+10001101
+10001100
+000
+1001","lw rd,
+(4*imm)(sp)
+sw rs2, (4*imm)(sp)
+lw rd’, (4*imm)(rs1’)
+sw rs1’, (4*imm)(rs2’)
+jal x0, 2*offset
+jal ra, 2*offset
+jalr
+x0, rs1, 0
+jalr
+ra, rs1, 0
+beq rs’, x0,
+2*imm
+bne rs’, x0,
+2*imm
+addi
+rd, x0,
+imm
+lui rd, imm
+addi
+rd, rd,
+imm
+addi
+sp, sp,
+16*imm
+addi
+rd’,
+sp, 4*imm
+slli
+rd, rd,
+imm
+srli
+rd’,
+rd’, imm
+srai
+rd’,
+rd’, imm
+andi
+rd’,
+rd’, imm
+add rd, x0,
+rs2
+add rd, rd,
+rs2
+and rd’, rd’, rs2’
+or rd’, rd’, rs2’
+xor rd’, rd’, rs2’
+sub rd’, rd’, rs2’
+addi
+x0, x0,
+0
+ebreak"
+
+
+Table 8
+0,1,2,3
+Register,ABI Name,Description,Saver
+"x0
+x1
+x2
+x3
+x4
+x5-x7
+x8
+x9
+x10-x11
+x12-x17
+x18-x27
+x28-x31","zero
+ra
+sp
+gp
+tp
+t0-t2
+s0
+/ fp
+s1
+a0-a1
+a2-a7
+s2-s11
+t3-t6","Zero constant
+Return address
+Stack pointer
+Global pointer
+Thread pointer
+Temporaries
+Saved / frame pointer
+Saved register
+Fn args/return values
+Fn args
+Saved registers
+Temporaries","—
+Callee
+Callee
+—
+—
+Caller
+Callee
+Callee
+Caller
+Caller
+Callee
+Caller"
+"f0-7
+f8-9
+f10-11
+f12-17
+f18-27
+f28-31","ft0-7
+fs0-1
+fa0-1
+fa2-7
+fs2-11
+ft8-11","FP temporaries
+FP saved registers
+FP args/return values
+FP args
+FP saved registers
+FP temporaries","Caller
+Callee
+Caller
+Caller
+Callee
+Caller"
+
+

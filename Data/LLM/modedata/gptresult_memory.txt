@@ -1,0 +1,10 @@
+- `ird_i = 0`, `dsize_i = 00`, `drd_i = 0`, `dwr_i = 0`
+- `ird_i = 0`, `dsize_i = 00`, `drd_i = 0`, `dwr_i = 1`
+- `ird_i = 0`, `dsize_i = 00`, `drd_i = 1`, `dwr_i = 0`
+- `ird_i = 0`, `dsize_i = 01`, `drd_i = 0`, `dwr_i = 0`
+- `ird_i = 0`, `dsize_i = 01`, `drd_i = 0`, `dwr_i = 1`
+- `ird_i = 0`, `dsize_i = 01`, `drd_i = 1`, `dwr_i = 0`
+- `ird_i = 0`, `dsize_i = 10`, `drd_i = 0`, `dwr_i = 0`
+- `ird_i = 0`, `dsize_i = 10`, `drd_i = 0`, `dwr_i = 1`
+- `ird_i = 0`, `dsize_i = 10`, `drd_i = 1`, `dwr_i = 0`
+- `ird_i = 1`, `dsize_i = XX`, `drd_i = 0`, `dwr_i = 0` 
